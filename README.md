@@ -38,7 +38,10 @@ and copy your Chirp app key and secret into `App.js`.
 
     `const secret = 'YOUR_CHIRP_APPLICATION_SECRET';`
 
-5. Run the demo.
+5. Check that each project builds by opening in the `.xcworkspace` in Xcode,
+and the `android` folder in Android Studio. This can solve some common set up issues.
+
+6. Run the demo.
 
     `react-native run-ios`
 
