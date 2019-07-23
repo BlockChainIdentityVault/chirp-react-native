@@ -117,7 +117,8 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
             }
 
             @Override
-            public void onSystemVolumeChanged(int oldVolume, int newVolume) {}
+            public void onSystemVolumeChanged(float oldVolume, float newVolume) {
+            }
         });
     }
 

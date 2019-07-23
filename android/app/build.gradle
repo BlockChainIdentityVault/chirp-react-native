@@ -141,7 +141,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     compile "com.facebook.react:react-native:+"  // From node_modules
 
-    compile "io.chirp:chirpsdk:3.7.+"
+    compile "io.chirp:chirpsdk:3.9.5"
 }
 
 // Run this once to be able to run the application with BUCK

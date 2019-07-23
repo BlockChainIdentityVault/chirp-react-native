@@ -1,0 +1,37 @@
+PODS:
+  - ChirpSDK (3.5.2)
+  - React (0.56.0):
+    - React/Core (= 0.56.0)
+  - React/Core (0.56.0):
+    - yoga (= 0.56.0.React)
+  - ReactNativePermissions (1.1.1):
+    - React
+  - yoga (0.56.0.React)
+
+DEPENDENCIES:
+  - ChirpSDK (= 3.5.2)
+  - React (from `../node_modules/react-native`)
+  - ReactNativePermissions (from `../node_modules/react-native-permissions`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - ChirpSDK
+
+EXTERNAL SOURCES:
+  React:
+    :path: "../node_modules/react-native"
+  ReactNativePermissions:
+    :path: "../node_modules/react-native-permissions"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
+
+SPEC CHECKSUMS:
+  ChirpSDK: f6301c8727433ae26dfa6a2770f92861008cbf9b
+  React: bdb39c05e2eed10a43056cff89a68bc9ebe7f232
+  ReactNativePermissions: b64e084dff6a5cad51587d38c306f09246246384
+  yoga: 2418c171de153cbe3c94dc28c3bf691b1695ae17
+
+PODFILE CHECKSUM: e35c5526ad6d07e5bcc98983dfc62149297dc79f
+
+COCOAPODS: 1.6.1
