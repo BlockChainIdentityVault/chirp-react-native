@@ -22,6 +22,11 @@
 
 ChirpConnect *sdk;
 
++ (BOOL)requiresMainQueueSetup
+{
+  return NO;
+}
+
 RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport
