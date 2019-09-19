@@ -17,7 +17,7 @@
 // under the License.
 //
 
-package com.chirpconnect.rctchirpconnect;
+package com.chirpsdk.rctchirpsdk;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -36,17 +36,17 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import io.chirp.connect.ChirpConnect;
-import io.chirp.connect.interfaces.ConnectEventListener;
-import io.chirp.connect.interfaces.ConnectSetConfigListener;
-import io.chirp.connect.models.ChirpError;
-import io.chirp.connect.models.ChirpConnectState;
+import io.chirp.chirpsdk.ChirpSDK;
+import io.chirp.chirpsdk.interfaces.ChirpEventListener;
+import io.chirp.chirpsdk.interfaces.ChirpSetConfigListener;
+import io.chirp.chirpsdk.models.ChirpError;
+import io.chirp.chirpsdk.models.ChirpSDKState;
 
 
-public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
+public class RCTChirpSDKModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
-    private static final String TAG = "ChirpConnect";
-    private ChirpConnect chirpConnect = null;
+    private static final String TAG = "ChirpSDK";
+    private ChirpSDK chirp = null;
     private ReactContext context;
     private boolean isStarted = false;
 
@@ -55,7 +55,7 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
         return TAG;
     }
 
-    public RCTChirpConnectModule(ReactApplicationContext reactContext) {
+    public RCTChirpSDKModule(ReactApplicationContext reactContext) {
         super(reactContext);
         context = reactContext;
         reactContext.addLifecycleEventListener(this);
@@ -64,12 +64,11 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("CHIRP_CONNECT_NOT_CREATED", ChirpConnectState.CHIRP_CONNECT_STATE_NOT_CREATED.getCode());
-        constants.put("CHIRP_CONNECT_STATE_STOPPED", ChirpConnectState.CHIRP_CONNECT_STATE_STOPPED.getCode());
-        constants.put("CHIRP_CONNECT_STATE_PAUSED", ChirpConnectState.CHIRP_CONNECT_STATE_PAUSED.getCode());
-        constants.put("CHIRP_CONNECT_STATE_RUNNING", ChirpConnectState.CHIRP_CONNECT_STATE_RUNNING.getCode());
-        constants.put("CHIRP_CONNECT_STATE_SENDING", ChirpConnectState.CHIRP_CONNECT_STATE_SENDING.getCode());
-        constants.put("CHIRP_CONNECT_STATE_RECEIVING", ChirpConnectState.CHIRP_CONNECT_STATE_RECEIVING.getCode());
+        constants.put("CHIRP_SDK_NOT_CREATED", ChirpSDKState.CHIRP_SDK_STATE_NOT_CREATED.getCode());
+        constants.put("CHIRP_SDK_STATE_STOPPED", ChirpSDKState.CHIRP_SDK_STATE_STOPPED.getCode());
+        constants.put("CHIRP_SDK_STATE_RUNNING", ChirpSDKState.CHIRP_SDK_STATE_RUNNING.getCode());
+        constants.put("CHIRP_SDK_STATE_SENDING", ChirpSDKState.CHIRP_SDK_STATE_SENDING.getCode());
+        constants.put("CHIRP_SDK_STATE_RECEIVING", ChirpSDKState.CHIRP_SDK_STATE_RECEIVING.getCode());
         return constants;
     }
 
@@ -81,9 +80,9 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
      */
     @ReactMethod
     public void init(String key, String secret) {
-        chirpConnect = new ChirpConnect(this.getCurrentActivity(), key, secret);
+        chirp = new ChirpSDK(this.getCurrentActivity(), key, secret);
 
-        chirpConnect.setListener(new ConnectEventListener() {
+        chirp.setListener(new ChirpEventListener() {
 
             @Override
             public void onSending(byte[] data, int channel) {
@@ -129,7 +128,7 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
      */
     @ReactMethod
     public void setConfigFromNetwork(final Promise promise) {
-        chirpConnect.setConfigFromNetwork(new ConnectSetConfigListener() {
+        chirp.setConfigFromNetwork(new ChirpSetConfigListener() {
 
             @Override
             public void onSuccess() {
@@ -151,7 +150,7 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
     @ReactMethod
     public void setConfig(String config) {
 
-        ChirpError error = chirpConnect.setConfig(config);
+        ChirpError error = chirp.setConfig(config);
         if (error.getCode() > 0) {
             onError(context, error.getMessage());
         }
@@ -164,7 +163,7 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
      */
     @ReactMethod
     public void start() {
-        ChirpError error = chirpConnect.start();
+        ChirpError error = chirp.start();
         if (error.getCode() > 0) {
             onError(context, error.getMessage());
         } else {
@@ -179,7 +178,7 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
      */
     @ReactMethod
     public void stop() {
-        ChirpError error = chirpConnect.stop();
+        ChirpError error = chirp.stop();
         if (error.getCode() > 0) {
             onError(context, error.getMessage());
         } else {
@@ -199,12 +198,12 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
             payload[i] = (byte)data.getInt(i);
         }
 
-        long maxSize = chirpConnect.maxPayloadLength();
+        long maxSize = chirp.maxPayloadLength();
         if (maxSize < payload.length) {
             onError(context, "Invalid payload");
             return;
         }
-        ChirpError error = chirpConnect.send(payload);
+        ChirpError error = chirp.send(payload);
         if (error.getCode() > 0) {
             onError(context, error.getMessage());
         }
@@ -217,11 +216,11 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
      */
     @ReactMethod
     public void sendRandom() {
-        long maxPayloadLength = chirpConnect.maxPayloadLength();
+        long maxPayloadLength = chirp.maxPayloadLength();
         long size = (long) new Random().nextInt((int) maxPayloadLength) + 1;
-        byte[] payload = chirpConnect.randomPayload((byte)size);
+        byte[] payload = chirp.randomPayload((byte)size);
 
-        ChirpError error = chirpConnect.send(payload);
+        ChirpError error = chirp.send(payload);
         if (error.getCode() > 0) {
             onError(context, error.getMessage());
         }
@@ -261,22 +260,22 @@ public class RCTChirpConnectModule extends ReactContextBaseJavaModule implements
 
     @Override
     public void onHostResume() {
-        if (chirpConnect != null && isStarted) {
-            chirpConnect.start();
+        if (chirp != null && isStarted) {
+            chirp.start();
         }
     }
 
     @Override
     public void onHostPause() {
-        if (chirpConnect != null) {
-            chirpConnect.stop();
+        if (chirp != null) {
+            chirp.stop();
         }
     }
 
     @Override
     public void onHostDestroy() {
-        if (chirpConnect != null) {
-            chirpConnect.close();
+        if (chirp != null) {
+            chirp.close();
         }
     }
 }

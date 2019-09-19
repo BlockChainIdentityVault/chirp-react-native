@@ -16,15 +16,15 @@
 // specific language governing permissions and limitations
 // under the License.
 //
-#ifndef RCTChirpConnect_h
-#define RCTChirpConnect_h
+#ifndef RCTChirpSDK_h
+#define RCTChirpSDK_h
 
-#import <ChirpConnect/ChirpConnect.h>
+#import <ChirpSDK/ChirpSDK.h>
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface RCTChirpConnect : RCTEventEmitter <RCTBridgeModule>
+@interface RCTChirpSDK : RCTEventEmitter <RCTBridgeModule>
 @end
 
-#endif /* RCTChirpConnect_h */
+#endif /* RCTChirpSDK_h */
 

@@ -56,8 +56,7 @@ buck-out/
 *.jsbundle
 
 # Chirp
-ChirpConnect.framework
-chirp-connect-release.aar
+ChirpSDK.framework
 
 # iOS
 Pods/

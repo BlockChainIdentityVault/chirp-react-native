@@ -62,9 +62,9 @@ and copy your Chirp app key and secret into `App.js`.
 Open the xcode project in the `/ios` folder, and build first of all.
 See [Troubleshooting](https://github.com/chirp/chirp-react-native/#troubleshooting) section.
 
-Then follow `Install the SDK` steps at [Getting Started [iOS]](https://developers.chirp.io/connect/getting-started/ios/) to include the Chirp SDK into your project.
+Then follow `Install the SDK` steps at [Getting Started [iOS]](https://developers.chirp.io/docs/getting-started/ios/) to include the Chirp SDK into your project.
 
-Copy [RCTChirpConnect.m](https://github.com/chirp/chirp-react-native/blob/master/ios/RCTChirpConnect.m) and [RCTChirpConnect.h](https://github.com/chirp/chirp-react-native/blob/master/ios/RCTChirpConnect.h) to your project.
+Copy [RCTChirpSDK.m](https://github.com/chirp/chirp-react-native/blob/master/ios/RCTChirpSDK.m) and [RCTChirpSDK.h](https://github.com/chirp/chirp-react-native/blob/master/ios/RCTChirpSDK.h) to your project.
 
 
 ### Android
@@ -72,14 +72,14 @@ Copy [RCTChirpConnect.m](https://github.com/chirp/chirp-react-native/blob/master
 Open the `/android` folder in Android Studio, and check the project builds.
 See [Troubleshooting](https://github.com/chirp/chirp-react-native/#troubleshooting) section.
 
-Then follow the `Install the SDK` steps at [Getting Started [Android]](https://developers.chirp.io/connect/getting-started/android/) to include the Chirp SDK into your project.
+Then follow the `Install the SDK` steps at [Getting Started [Android]](https://developers.chirp.io/docs/getting-started/android/) to include the Chirp SDK into your project.
 
-Copy [RCTChirpConnectModule.java](https://github.com/chirp/chirp-react-native/blob/master/android/app/src/main/java/com/chirpreactnative/RCTChirpConnectModule.java) and [RCTChirpConnectPackage.java](https://github.com/chirp/chirp-react-native/blob/master/android/app/src/main/java/com/chirpreactnative/RCTChirpConnectModule.java) to the project.
+Copy [RCTChirpSDKModule.java](https://github.com/chirp/chirp-react-native/blob/master/android/app/src/main/java/com/chirpreactnative/RCTChirpSDKModule.java) and [RCTChirpSDKPackage.java](https://github.com/chirp/chirp-react-native/blob/master/android/app/src/main/java/com/chirpreactnative/RCTChirpSDKModule.java) to the project.
 
 Import into your MainApplication.java
 
 ```java
-import com.chirpconnect.rctchirpconnect.RCTChirpConnectPackage;
+import com.chirpsdk.rctchirpsdk.RCTChirpSDKPackage;
 ```
 
 Add the package to the `getPackages` function
@@ -89,7 +89,7 @@ Add the package to the `getPackages` function
   protected List<ReactPackage> getPackages() {
     return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
-        new RCTChirpConnectPackage()  // <---
+        new RCTChirpSDKPackage()  // <---
     );
   }
 ```
@@ -111,8 +111,8 @@ In App.js
 import { NativeEventEmitter, NativeModules } from 'react-native';
 import Permissions from 'react-native-permissions';
 
-const ChirpConnect = NativeModules.ChirpConnect;
-const ChirpConnectEmitter = new NativeEventEmitter(ChirpConnect);
+const ChirpSDK = NativeModules.ChirpSDK;
+const ChirpSDKEmitter = new NativeEventEmitter(ChirpSDK);
 
 export default class App extends Component<{}> {
 
@@ -122,7 +122,7 @@ export default class App extends Component<{}> {
       await Permissions.request('microphone')
     }
 
-    this.onReceived = ChirpConnectEmitter.addListener(
+    this.onReceived = ChirpSDKEmitter.addListener(
       'onReceived',
       (event) => {
         if (event.data) {
@@ -130,14 +130,14 @@ export default class App extends Component<{}> {
         }
       }
     )
-    this.onError = ChirpConnectEmitter.addListener(
+    this.onError = ChirpSDKEmitter.addListener(
       'onError', (event) => { console.warn(event.message) }
     )
 
-    ChirpConnect.init(key, secret);
-    ChirpConnect.setConfigFromNetwork(config);
-    ChirpConnect.start();
-    ChirpConnect.sendRandom();
+    ChirpSDK.init(key, secret);
+    ChirpSDK.setConfigFromNetwork(config);
+    ChirpSDK.start();
+    ChirpSDK.sendRandom();
   }
 
   componentWillUnmount() {
@@ -152,53 +152,53 @@ export default class App extends Component<{}> {
 
 ```javascript
 // Initialise the SDK.
-ChirpConnect.init(String key, String secret)
+ChirpSDK.init(String key, String secret)
 
 // Set default configuration from the network
-await ChirpConnect.setConfigFromNetwork()
+await ChirpSDK.setConfigFromNetwork()
 
 // Explicitly set the config string
-ChirpConnect.setConfig(String config)
+ChirpSDK.setConfig(String config)
 
 // Start the SDK
-ChirpConnect.start()
+ChirpSDK.start()
 
 // Stop the SDK
-ChirpConnect.stop()
+ChirpSDK.stop()
 
 // Send an array of bytes to the speaker
-ChirpConnect.send(Array data)
+ChirpSDK.send(Array data)
 
 // Send a random array of bytes to the speaker
-ChirpConnect.sendRandom()
+ChirpSDK.sendRandom()
 
 // This event is called when the state of the SDK changes.
-// The event contains the following body, where the state constants are accessible from the ChirpConnect interface.
-// { "status": ChirpConnect.CHIRP_CONNECT_STATE_RUNNING }
-ChirpConnectEmitter.addListener('onStateChanged', (event) => {})
+// The event contains the following body, where the state constants are accessible from the ChirpSDK interface.
+// { "status": ChirpSDK.CHIRP_SDK_STATE_RUNNING }
+ChirpSDKEmitter.addListener('onStateChanged', (event) => {})
 
 // This event is called when the SDK begins sending data.
 // The event contains the following body.
 // { "data": [0, 1, 2, 3, 4] }
-ChirpConnectEmitter.addListener('onSending', (event) => {})
+ChirpSDKEmitter.addListener('onSending', (event) => {})
 
 // This event is called when the SDK has finished sending data.
 // The event contains the following body.
 // { "data": [0, 1, 2, 3, 4] }
-ChirpConnectEmitter.addListener('onSent', (event) => {})
+ChirpSDKEmitter.addListener('onSent', (event) => {})
 
 // This event is called when the SDK has started to receive data.
-ChirpConnectEmitter.addListener('onReceiving', () => {})
+ChirpSDKEmitter.addListener('onReceiving', () => {})
 
 // This event is called when the SDK has finished receiving data.
 // The event contains the following body.
 // { "data": [0, 1, 2, 3, 4] }
-ChirpConnectEmitter.addListener('onReceived', (event) => {})
+ChirpSDKEmitter.addListener('onReceived', (event) => {})
 
 // This event is called if the SDK encounters an error.
 // The event contains the following body.
 // { "message": "An error has occurred" }
-ChirpConnectEmitter.addListener('onError', (event) => {})
+ChirpSDKEmitter.addListener('onError', (event) => {})
 
 ```
 

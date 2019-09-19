@@ -1,7 +1,7 @@
 package com.chirpreactnative;
 
 import android.app.Application;
-import com.chirpconnect.rctchirpconnect.RCTChirpConnectPackage;
+import com.chirpsdk.rctchirpsdk.RCTChirpSDKPackage;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -24,7 +24,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new RCTChirpConnectPackage()
+          new RCTChirpSDKPackage()
       );
     }
 

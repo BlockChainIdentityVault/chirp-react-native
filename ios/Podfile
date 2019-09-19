@@ -6,7 +6,7 @@ target 'ChirpReactNative' do
   use_frameworks!
 
   # Pods for ChirpReactNative
-  pod 'ChirpSDK', '3.5.2'
+  pod 'ChirpSDK', '3.6.0'
   pod 'React', :path => '../node_modules/react-native'
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'

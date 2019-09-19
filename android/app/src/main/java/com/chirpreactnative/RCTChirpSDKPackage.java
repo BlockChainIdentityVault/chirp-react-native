@@ -16,7 +16,7 @@
 // specific language governing permissions and limitations
 // under the License.
 //
-package com.chirpconnect.rctchirpconnect;
+package com.chirpsdk.rctchirpsdk;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RCTChirpConnectPackage implements ReactPackage {
+public class RCTChirpSDKPackage implements ReactPackage {
 
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
@@ -44,7 +44,7 @@ public class RCTChirpConnectPackage implements ReactPackage {
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new RCTChirpConnectModule(reactContext));
+        modules.add(new RCTChirpSDKModule(reactContext));
 
         return modules;
     }

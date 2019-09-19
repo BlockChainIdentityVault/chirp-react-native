@@ -30,12 +30,13 @@ import {
   NativeModules
 } from 'react-native';
 
-const ChirpConnect = NativeModules.ChirpConnect;
-const ChirpConnectEmitter = new NativeEventEmitter(ChirpConnect);
+const ChirpSDK = NativeModules.ChirpSDK;
+const ChirpSDKEmitter = new NativeEventEmitter(ChirpSDK);
 
 const key = '<YOUR_CHIRP_APP_KEY>';
 const secret = '<YOUR_CHIRP_APP_SECRET>';
 const config = '<YOUR_CHIRP_APP_CONFIG>';
+
 
 export default class App extends Component<{}> {
 
@@ -54,24 +55,22 @@ export default class App extends Component<{}> {
       await Permissions.request('microphone')
     }
 
-    this.onStateChanged = ChirpConnectEmitter.addListener(
+    this.onStateChanged = ChirpSDKEmitter.addListener(
       'onStateChanged',
       (event) => {
-        if (event.status === ChirpConnect.CHIRP_CONNECT_STATE_STOPPED) {
+        if (event.status === ChirpSDK.CHIRP_SDK_STATE_STOPPED) {
           this.setState({ status: 'Stopped' });
-        } else if (event.status === ChirpConnect.CHIRP_CONNECT_STATE_PAUSED) {
-          this.setState({ status: 'Paused' });
-        } else if (event.status === ChirpConnect.CHIRP_CONNECT_STATE_RUNNING) {
+        } else if (event.status === ChirpSDK.CHIRP_SDK_STATE_RUNNING) {
           this.setState({ status: 'Running' });
-        } else if (event.status === ChirpConnect.CHIRP_CONNECT_STATE_SENDING) {
+        } else if (event.status === ChirpSDK.CHIRP_SDK_STATE_SENDING) {
           this.setState({ status: 'Sending' });
-        } else if (event.status === ChirpConnect.CHIRP_CONNECT_STATE_RECEIVING) {
+        } else if (event.status === ChirpSDK.CHIRP_SDK_STATE_RECEIVING) {
           this.setState({ status: 'Receiving' });
         }
       }
     );
 
-    this.onReceived = ChirpConnectEmitter.addListener(
+    this.onReceived = ChirpSDKEmitter.addListener(
       'onReceived',
       (event) => {
         if (event.data.length) {
@@ -80,14 +79,14 @@ export default class App extends Component<{}> {
       }
     )
 
-    this.onError = ChirpConnectEmitter.addListener(
+    this.onError = ChirpSDKEmitter.addListener(
       'onError', (event) => { console.warn(event.message) }
     )
 
     try {
-      ChirpConnect.init(key, secret);
-      ChirpConnect.setConfig(config);
-      ChirpConnect.start();
+      ChirpSDK.init(key, secret);
+      ChirpSDK.setConfig(config);
+      ChirpSDK.start();
       this.setState({ initialised: true })
     } catch(e) {
       console.warn(e.message);
@@ -101,7 +100,7 @@ export default class App extends Component<{}> {
   }
 
   onPress() {
-    ChirpConnect.send([0, 1, 2, 3, 4]);
+    ChirpSDK.send([0, 1, 2, 3, 4]);
   }
 
   render() {

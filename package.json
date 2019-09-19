@@ -1,14 +1,14 @@
 {
   "name": "ChirpReactNative",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
   "dependencies": {
-    "react": "16.4.1",
-    "react-native": "0.56.0",
+    "react": "16.8.6",
+    "react-native": "0.60.5",
     "react-native-permissions": "^1.1.1"
   },
   "devDependencies": {

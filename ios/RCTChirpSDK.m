@@ -16,11 +16,11 @@
 // specific language governing permissions and limitations
 // under the License.
 //
-#import "RCTChirpConnect.h"
+#import "RCTChirpSDK.h"
 
-@implementation RCTChirpConnect
+@implementation RCTChirpSDK
 
-ChirpConnect *sdk;
+ChirpSDK *chirp;
 
 + (BOOL)requiresMainQueueSetup
 {
@@ -32,12 +32,11 @@ RCT_EXPORT_MODULE();
 - (NSDictionary *)constantsToExport
 {
   return @{
-    @"CHIRP_CONNECT_STATE_NOT_CREATED": [NSNumber numberWithInt:CHIRP_CONNECT_STATE_NOT_CREATED],
-    @"CHIRP_CONNECT_STATE_STOPPED": [NSNumber numberWithInt:CHIRP_CONNECT_STATE_STOPPED],
-    @"CHIRP_CONNECT_STATE_PAUSED": [NSNumber numberWithInt:CHIRP_CONNECT_STATE_PAUSED],
-    @"CHIRP_CONNECT_STATE_RUNNING": [NSNumber numberWithInt:CHIRP_CONNECT_STATE_RUNNING],
-    @"CHIRP_CONNECT_STATE_SENDING": [NSNumber numberWithInt:CHIRP_CONNECT_STATE_SENDING],
-    @"CHIRP_CONNECT_STATE_RECEIVING": [NSNumber numberWithInt:CHIRP_CONNECT_STATE_RECEIVING]
+    @"CHIRP_SDK_STATE_NOT_CREATED": [NSNumber numberWithInt:CHIRP_SDK_STATE_NOT_CREATED],
+    @"CHIRP_SDK_STATE_STOPPED": [NSNumber numberWithInt:CHIRP_SDK_STATE_STOPPED],
+    @"CHIRP_SDK_STATE_RUNNING": [NSNumber numberWithInt:CHIRP_SDK_STATE_RUNNING],
+    @"CHIRP_SDK_STATE_SENDING": [NSNumber numberWithInt:CHIRP_SDK_STATE_SENDING],
+    @"CHIRP_SDK_STATE_RECEIVING": [NSNumber numberWithInt:CHIRP_SDK_STATE_RECEIVING]
   };
 }
 
@@ -61,39 +60,39 @@ RCT_EXPORT_MODULE();
  */
 RCT_EXPORT_METHOD(init:(NSString *)key secret:(NSString *)secret)
 {
-  sdk = [[ChirpConnect alloc] initWithAppKey:key
-                                   andSecret:secret];
+  chirp = [[ChirpSDK alloc] initWithAppKey:key
+                                 andSecret:secret];
 
-  [sdk setStateUpdatedBlock:^(CHIRP_CONNECT_STATE oldState,
-                              CHIRP_CONNECT_STATE newState)
+  [chirp setStateUpdatedBlock:^(CHIRP_SDK_STATE oldState,
+                                CHIRP_SDK_STATE newState)
    {
      [self sendEventWithName:@"onStateChanged" body:@{@"status": [NSNumber numberWithInt:newState]}];
    }];
 
-  [sdk setSendingBlock:^(NSData * _Nonnull data, NSUInteger channel)
+  [chirp setSendingBlock:^(NSData * _Nonnull data, NSUInteger channel)
    {
      NSArray *payload = [self dataToArray: data];
      [self sendEventWithName:@"onSending" body:@{@"data": payload}];
    }];
 
-  [sdk setSentBlock:^(NSData * _Nonnull data, NSUInteger channel)
+  [chirp setSentBlock:^(NSData * _Nonnull data, NSUInteger channel)
    {
      NSArray *payload = [self dataToArray: data];
      [self sendEventWithName:@"onSent" body:@{@"data": payload}];
    }];
 
-  [sdk setReceivingBlock:^(NSUInteger channel)
+  [chirp setReceivingBlock:^(NSUInteger channel)
    {
      [self sendEventWithName:@"onReceiving" body:@{}];
    }];
 
-  [sdk setReceivedBlock:^(NSData * _Nonnull data, NSUInteger channel)
+  [chirp setReceivedBlock:^(NSData * _Nullable data, NSUInteger channel)
    {
      NSArray *payload = [self dataToArray: data];
      [self sendEventWithName:@"onReceived" body:@{@"data": payload}];
    }];
 
-  [sdk setAuthenticatedBlock:^(NSError * _Nullable error) {
+  [chirp setAuthenticatedBlock:^(NSError * _Nullable error) {
     if (error) {
       [self sendEventWithName:@"onError" body:@{@"message": [error localizedDescription]}];
     }
@@ -108,7 +107,7 @@ RCT_EXPORT_METHOD(init:(NSString *)key secret:(NSString *)secret)
 RCT_EXPORT_METHOD(setConfigFromNetwork:(RCTPromiseResolveBlock)resolve
                               rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [sdk setConfigFromNetworkWithCompletion:^(NSError * _Nullable error) {
+    [chirp setConfigFromNetworkWithCompletion:^(NSError * _Nullable error) {
       if (error) {
         reject(@"Error", @"Authentication Error", error);
       } else {
@@ -124,7 +123,7 @@ RCT_EXPORT_METHOD(setConfigFromNetwork:(RCTPromiseResolveBlock)resolve
  */
 RCT_EXPORT_METHOD(setConfig:(NSString *)config)
 {
-  NSError *err = [sdk setConfig:config];
+  NSError *err = [chirp setConfig:config];
   if (err) {
     [self sendEventWithName:@"onError" body:@{@"message": [err localizedDescription]}];
   }
@@ -137,7 +136,7 @@ RCT_EXPORT_METHOD(setConfig:(NSString *)config)
  */
 RCT_EXPORT_METHOD(start)
 {
-  NSError *err = [sdk start];
+  NSError *err = [chirp start];
   if (err) {
     [self sendEventWithName:@"onError" body:@{@"message": [err localizedDescription]}];
   }
@@ -150,7 +149,7 @@ RCT_EXPORT_METHOD(start)
  */
 RCT_EXPORT_METHOD(stop)
 {
-  NSError *err = [sdk stop];
+  NSError *err = [chirp stop];
   if (err) {
     [self sendEventWithName:@"onError" body:@{@"message": [err localizedDescription]}];
   }
@@ -164,7 +163,7 @@ RCT_EXPORT_METHOD(stop)
 RCT_EXPORT_METHOD(send: (NSArray *)data)
 {
   NSData *payload = [self arrayToData: data];
-  NSError *err = [sdk send:payload];
+  NSError *err = [chirp send:payload];
   if (err) {
     [self sendEventWithName:@"onError" body:@{@"message": [err localizedDescription]}];
   }
@@ -177,9 +176,9 @@ RCT_EXPORT_METHOD(send: (NSArray *)data)
  */
 RCT_EXPORT_METHOD(sendRandom)
 {
-  NSUInteger length = 1 + arc4random() % (sdk.maxPayloadLength - 1);
-  NSData *data = [sdk randomPayloadWithLength:length];
-  NSError *err = [sdk send:data];
+  NSUInteger length = 1 + arc4random() % (chirp.maxPayloadLength - 1);
+  NSData *data = [chirp randomPayloadWithLength:length];
+  NSError *err = [chirp send:data];
   if (err) {
     [self sendEventWithName:@"onError" body:@{@"message": [err localizedDescription]}];
   }
