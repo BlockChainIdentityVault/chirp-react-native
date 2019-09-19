@@ -82,16 +82,18 @@ Import into your MainApplication.java
 import com.chirpsdk.rctchirpsdk.RCTChirpSDKPackage;
 ```
 
-Add the package to the `getPackages` function
+Add the ChirpSDK to the `createNativeModules` function
 
 ```java
 @Override
-  protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-        new MainReactPackage(),
-        new RCTChirpSDKPackage()  // <---
-    );
-  }
+  public List<NativeModule> createNativeModules(
+        ReactApplicationContext reactContext) {
+    List<NativeModule> modules = new ArrayList<>();
+
+    modules.add(new RCTChirpSDKModule(reactContext));  // <---
+
+    return modules;
+}
 ```
 
 
