@@ -27,7 +27,7 @@ target 'ChirpReactNative' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  use_native_modules!
-
   pod 'ChirpSDK', '3.6.0'
+  
+  use_native_modules!
 end

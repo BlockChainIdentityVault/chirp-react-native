@@ -11,6 +11,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		779F87422333DEC8000206A8 /* RCTChirpSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 779F87412333DEC8000206A8 /* RCTChirpSDK.m */; };
 		A317D920B90F222FACBC6B61 /* libPods-ChirpReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1609C0C19A60A86CA4252312 /* libPods-ChirpReactNative.a */; };
 /* End PBXBuildFile section */
 
@@ -25,9 +26,10 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ChirpReactNative/main.m; sourceTree = "<group>"; };
 		1609C0C19A60A86CA4252312 /* libPods-ChirpReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChirpReactNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27C2E8296D492F6B93A832F5 /* Pods-ChirpReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChirpReactNative.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChirpReactNative/Pods-ChirpReactNative.release.xcconfig"; sourceTree = "<group>"; };
+		779F87412333DEC8000206A8 /* RCTChirpSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTChirpSDK.m; sourceTree = "<group>"; };
+		779F87432333DED3000206A8 /* RCTChirpSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTChirpSDK.h; sourceTree = "<group>"; };
 		D9A2FA040BC39E66FE1526E1 /* Pods-ChirpReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChirpReactNative.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChirpReactNative/Pods-ChirpReactNative.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				779F87432333DED3000206A8 /* RCTChirpSDK.h */,
+				779F87412333DEC8000206A8 /* RCTChirpSDK.m */,
 			);
 			name = ChirpReactNative;
 			sourceTree = "<group>";
@@ -69,7 +73,6 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				1609C0C19A60A86CA4252312 /* libPods-ChirpReactNative.a */,
 			);
 			name = Frameworks;
@@ -141,6 +144,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -223,6 +227,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				779F87422333DEC8000206A8 /* RCTChirpSDK.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
