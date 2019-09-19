@@ -1,6 +1,11 @@
 package com.chirpreactnative;
 
 import android.app.Application;
+import android.util.Log;
+import com.facebook.react.PackageList;
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
+import com.facebook.react.bridge.JavaScriptExecutorFactory;
+
 import com.chirpsdk.rctchirpsdk.RCTChirpSDKPackage;
 
 import com.facebook.react.ReactApplication;
@@ -22,10 +27,10 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-          new RCTChirpSDKPackage()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      packages.add(new RCTChirpSDKPackage());
+      return packages;
     }
 
     @Override

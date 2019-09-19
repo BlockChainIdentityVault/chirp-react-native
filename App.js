@@ -18,13 +18,14 @@
 //
 import React, { Component } from 'react';
 import Permissions from 'react-native-permissions';
+
 import {
-  Button,
-  Platform,
   StyleSheet,
+  View,
   Text,
-  View
+  Button,
 } from 'react-native';
+
 import {
   NativeEventEmitter,
   NativeModules
@@ -38,15 +39,12 @@ const secret = '<YOUR_CHIRP_APP_SECRET>';
 const config = '<YOUR_CHIRP_APP_CONFIG>';
 
 
-export default class App extends Component<{}> {
+export default class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      'initialised': false,
-      'status': 'Sleeping',
-      'data': '----------'
-    }
+  state = {
+    'initialised': false,
+    'status': 'Sleeping',
+    'data': '----------'
   }
 
   async componentDidMount() {
@@ -97,6 +95,7 @@ export default class App extends Component<{}> {
     this.onStateChanged.remove();
     this.onReceived.remove();
     this.onError.remove();
+    ChirpSDK.stop();
   }
 
   onPress() {
@@ -109,10 +108,10 @@ export default class App extends Component<{}> {
         <Text style={styles.welcome}>
           Welcome to Chirp!
         </Text>
-        <Text style={styles.instructions}>
+        <Text style={styles.content}>
           {this.state.status}
         </Text>
-        <Text style={styles.instructions}>
+        <Text style={styles.content}>
           {this.state.data}
         </Text>
         <Button
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 60,
   },
-  instructions: {
+  content: {
     padding: 10,
     textAlign: 'center',
     color: '#333333',
