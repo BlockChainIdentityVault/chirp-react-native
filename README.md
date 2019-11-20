@@ -38,6 +38,8 @@ and copy your Chirp app key and secret into `App.js`.
 
     `const secret = 'YOUR_CHIRP_APPLICATION_SECRET';`
 
+    `const config = 'YOUR_CHIRP_APPLICATION_CONFIG';`
+
 5. Check that each project builds by opening in the `.xcworkspace` in Xcode,
 and the `android` folder in Android Studio. This can solve some common set up issues.
 
@@ -137,7 +139,7 @@ export default class App extends Component<{}> {
     )
 
     ChirpSDK.init(key, secret);
-    ChirpSDK.setConfigFromNetwork(config);
+    ChirpSDK.setConfig(config);
     ChirpSDK.start();
     ChirpSDK.sendRandom();
   }
@@ -155,9 +157,6 @@ export default class App extends Component<{}> {
 ```javascript
 // Initialise the SDK.
 ChirpSDK.init(String key, String secret)
-
-// Set default configuration from the network
-await ChirpSDK.setConfigFromNetwork()
 
 // Explicitly set the config string
 ChirpSDK.setConfig(String config)
