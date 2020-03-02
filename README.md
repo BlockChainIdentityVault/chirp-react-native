@@ -1,4 +1,6 @@
-# Chirp for React Native
+# DEPRECATED
+
+## This project is no longer actively maintained.
 
 See [Getting Started with React Native](https://facebook.github.io/react-native/docs/getting-started.html)
 
